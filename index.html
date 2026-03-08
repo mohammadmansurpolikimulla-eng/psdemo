@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f3ef;
+      --ink: #1a1a18;
+      --muted: #8a8880;
+      --accent: #c8a96e;
+      --line: #dedad4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 4rem;
+      z-index: 100;
+      mix-blend-mode: multiply;
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 4rem;
+      gap: 4rem;
+    }
+    .hero-text { padding-top: 4rem; }
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 1.1;
+      font-weight: 400;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+    h1 em { font-style: italic; color: var(--muted); }
+    .hero-desc {
+      margin-top: 1.8rem;
+      max-width: 38ch;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+    }
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex; gap: 1.2rem; align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.8s forwards;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border: 1px solid var(--ink);
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      transition: background 0.25s, color 0.25s;
+      cursor: pointer;
+      background: transparent;
+    }
+    .btn:hover { background: var(--ink); color: var(--bg); }
+    .btn.ghost { border-color: var(--line); color: var(--muted); }
+    .btn.ghost:hover { border-color: var(--ink); color: var(--ink); background: transparent; }
+
+    .hero-visual {
+      display: flex; justify-content: flex-end; align-items: center;
+      opacity: 0;
+      animation: fadeIn 1s 0.5s forwards;
+    }
+    .avatar-wrap {
+      position: relative;
+      width: 360px; height: 440px;
+    }
+    .avatar-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(145deg, #e8e2d8 0%, #d4c9b8 100%);
+      border-radius: 2px;
+    }
+    .avatar-initials {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 7rem;
+      color: rgba(26,26,24,0.12);
+      letter-spacing: -0.04em;
+    }
+    .avatar-label {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .accent-dot {
+      position: absolute; top: -12px; right: -12px;
+      width: 24px; height: 24px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* SECTION SHARED */
+    section { padding: 6rem 4rem; }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+    }
+    .divider {
+      width: 40px; height: 1px;
+      background: var(--accent);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ABOUT */
+    #about { border-top: 1px solid var(--line); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+    .about-grid p {
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 0.97rem;
+      margin-bottom: 1rem;
+    }
+    .skills-list {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+    .skill-tag {
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--line);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      border-radius: 1px;
+    }
+
+    /* WORK */
+    #work { border-top: 1px solid var(--line); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .project-card {
+      border: 1px solid var(--line);
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.25s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s;
+    }
+    .project-card:hover { border-color: #c9c5bd; transform: translateY(-3px); }
+    .project-card:hover::before { transform: scaleY(1); }
+    .project-num {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .project-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.7rem;
+    }
+    .project-card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-top: 1.4rem;
+    }
+    .project-tags span {
+      font-size: 0.7rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 0.2rem 0.55rem;
+    }
+
+    /* CONTACT */
+    #contact { border-top: 1px solid var(--line); }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+    .contact-wrap p {
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 0.97rem;
+      margin-bottom: 2rem;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); }
+    .contact-link span:last-child { color: var(--muted); font-size: 0.75rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Intersection observer reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      #hero { grid-template-columns: 1fr; padding: 6rem 2rem 4rem; }
+      .hero-visual { justify-content: center; }
+      .avatar-wrap { width: 280px; height: 340px; }
+      section { padding: 4rem 2rem; }
+      .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">A.R.</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-text">
+      <p class="hero-tag">Available for freelance</p>
+      <h1>Alex<br><em>Rivera</em><br>Designer</h1>
+      <p class="hero-desc">I craft thoughtful digital experiences — clean interfaces, considered interactions, and work that lasts.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#work">View Work</a>
+        <a class="btn ghost" href="#contact">Say Hello</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="avatar-wrap">
+        <div class="avatar-bg"></div>
+        <div class="avatar-initials">AR</div>
+        <div class="avatar-label">Product &amp; UI Designer</div>
+        <div class="accent-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label reveal">About</p>
+    <h2 class="reveal">A bit about me</h2>
+    <div class="divider reveal"></div>
+    <div class="about-grid">
+      <div class="reveal">
+        <p>I'm a product designer with 5+ years of experience working with startups and studios to build digital products that feel human. My process blends research, strategy, and craft.</p>
+        <p>When I'm not designing, I'm sketching, reading about type, or exploring the intersection of design and code.</p>
+      </div>
+      <div class="reveal">
+        <p style="color:var(--ink); font-size:0.8rem; letter-spacing:0.09em; text-transform:uppercase; margin-bottom:1rem;">Skills &amp; Tools</p>
+        <div class="skills-list">
+          <span class="skill-tag">UI Design</span>
+          <span class="skill-tag">UX Research</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Prototyping</span>
+          <span class="skill-tag">Design Systems</span>
+          <span class="skill-tag">HTML / CSS</span>
+          <span class="skill-tag">Framer</span>
+          <span class="skill-tag">Webflow</span>
+          <span class="skill-tag">Motion Design</span>
+          <span class="skill-tag">Branding</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <p class="section-label reveal">Selected Work</p>
+    <h2 class="reveal">Recent Projects</h2>
+    <div class="divider reveal"></div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <p class="project-num">01</p>
+        <h3>Lune Finance</h3>
+        <p>A modern personal finance app redesign focused on clarity and reducing cognitive load for users managing complex portfolios.</p>
+        <div class="project-tags">
+          <span>Product Design</span><span>iOS</span><span>Fintech</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">02</p>
+        <h3>Forma Design System</h3>
+        <p>An end-to-end design system built for a SaaS company — 200+ components, token architecture, and full documentation.</p>
+        <div class="project-tags">
+          <span>Systems</span><span>Figma</span><span>SaaS</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">03</p>
+        <h3>Arro Studio</h3>
+        <p>Brand identity and website for a creative architecture studio. Typeface selection, color palette, and motion principles.</p>
+        <div class="project-tags">
+          <span>Branding</span><span>Web</span><span>Motion</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">04</p>
+        <h3>Bloom Health</h3>
+        <p>A telehealth onboarding experience that increased completion rate by 34% through simplified flows and accessible UI patterns.</p>
+        <div class="project-tags">
+          <span>UX Research</span><span>Health</span><span>Web</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">05</p>
+        <h3>Orbit Dashboard</h3>
+        <p>Real-time analytics dashboard for a logistics company — dense data made scannable through smart information hierarchy.</p>
+        <div class="project-tags">
+          <span>Dashboard</span><span>Data Viz</span><span>B2B</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">06</p>
+        <h3>Kora E-commerce</h3>
+        <p>A luxury fashion e-commerce experience emphasizing editorial photography, smooth transitions, and frictionless checkout.</p>
+        <div class="project-tags">
+          <span>E-commerce</span><span>Luxury</span><span>Framer</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label reveal">Contact</p>
+    <h2 class="reveal">Let's work together</h2>
+    <div class="divider reveal"></div>
+    <div class="contact-wrap">
+      <div class="reveal">
+        <p>I'm open to freelance projects, full-time roles, and interesting collaborations. If you have something in mind, I'd love to hear about it.</p>
+        <a class="btn" href="mailto:hello@alexrivera.co">hello@alexrivera.co</a>
+      </div>
+      <div class="contact-links reveal">
+        <a class="contact-link" href="#">
+          <span>LinkedIn</span>
+          <span>↗ linkedin.com/in/alexrivera</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span>Dribbble</span>
+          <span>↗ dribbble.com/alexrivera</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span>GitHub</span>
+          <span>↗ github.com/alexrivera</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span>Read CV</span>
+          <span>↗ Download PDF</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Alex Rivera</p>
+    <p>Designed &amp; built with care</p>
+  </footer>
+
+  <script>
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
